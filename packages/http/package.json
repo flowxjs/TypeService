@@ -1,6 +1,6 @@
 {
   "name": "@flowx/http",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "http server for typeservice",
   "author": "shenyunjie <shenyunjie@aidigger.com>",
   "homepage": "https://github.com/cevio/TypeService#readme",
@@ -24,8 +24,8 @@
     "url": "https://github.com/cevio/TypeService/issues"
   },
   "dependencies": {
-    "@flowx/container": "^1.0.1",
-    "@flowx/process": "^1.0.1",
+    "@flowx/container": "^1.0.2",
+    "@flowx/process": "^1.0.2",
     "find-my-way": "^3.0.0",
     "koa": "^2.11.0",
     "koa-compose": "^4.1.0"
