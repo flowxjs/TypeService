@@ -101,7 +101,7 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
       if (!propertyMethods.length) continue;
       const propertyPath = method.meta.got<string>(NAMESPACE.PATH, '/');
       const propertyEntryPath = path.join(classPrefix, '.', propertyPath);
-      this.logger.silly(propertyMethods.join(','), '+ %s', propertyEntryPath);
+      this.logger.info(propertyMethods.join(','), '+ %s', propertyEntryPath);
       this.router.on(propertyMethods, propertyEntryPath, async function(req, res, params) {
         const ctx: Koa.ParameterizedContext<any, C> = this;
         Object.defineProperties(ctx, {
