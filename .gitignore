@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+
+# IDE
+/.idea
+/.awcache
+/.vscode
+*.code-workspace
+
+# dist
+dist
+
+
+# logs
+logs/*.log
+**/logs/**.log
+
+# misc
+.DS_Store
+lerna-debug.log
+npm-debug.log
+yarn-error.log
+packages/*/__debug__
+.clinic
+
+# test
+packages/*/coverage
+
+# future
+FUTURE_*
+
+# typescript
+tsconfig.tsbuildinfo
+
+#lerna
+lerna-debug.log
+package.json.lerna_backup
+packages/**/*.js
+packages/**/*.d.ts

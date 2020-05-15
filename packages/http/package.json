@@ -1,0 +1,41 @@
+{
+  "name": "@flowx/http",
+  "version": "1.0.0",
+  "description": "http server for typeservice",
+  "author": "shenyunjie <shenyunjie@aidigger.com>",
+  "homepage": "https://github.com/cevio/TypeService#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cevio/TypeService.git"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -d"
+  },
+  "bugs": {
+    "url": "https://github.com/cevio/TypeService/issues"
+  },
+  "dependencies": {
+    "@flowx/container": "^1.0.0",
+    "@flowx/process": "^1.0.0",
+    "find-my-way": "^3.0.0",
+    "koa": "^2.11.0",
+    "koa-compose": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@reactivex/rxjs": "^6.5.5",
+    "@types/node": "^13.13.5",
+    "inversify": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.11.3"
+  }
+}

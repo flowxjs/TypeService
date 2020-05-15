@@ -1,0 +1,23 @@
+{
+  "name": "@flowx/events",
+  "version": "1.0.0",
+  "description": "event bus for typeservice",
+  "author": "evio <evio@vip.qq.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "dist/events.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -d"
+  },
+  "peerDependencies": {
+    "@reactivex/rxjs": "^6.5.5",
+    "rxjs-compat": "^6.5.5"
+  }
+}
