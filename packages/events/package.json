@@ -1,6 +1,6 @@
 {
   "name": "@flowx/events",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "event bus for typeservice",
   "author": "evio <evio@vip.qq.com>",
   "homepage": "",
@@ -19,5 +19,8 @@
   "peerDependencies": {
     "@reactivex/rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.5"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
