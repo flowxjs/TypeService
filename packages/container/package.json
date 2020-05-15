@@ -1,6 +1,6 @@
 {
   "name": "@flowx/container",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "container for typeservice",
   "author": "evio <evio@vip.qq.com>",
   "homepage": "",
@@ -17,8 +17,8 @@
     "build": "rm -rf dist && tsc -d"
   },
   "dependencies": {
-    "@flowx/events": "^1.0.0",
-    "@flowx/process": "^1.0.0",
+    "@flowx/events": "^1.0.1",
+    "@flowx/process": "^1.0.1",
     "minimist": "^1.2.5"
   },
   "devDependencies": {
