@@ -1,13 +1,13 @@
 import { inject } from 'inversify';
 import { Controller, Get, Query, Http, HttpCode, Header, Redirect, ParseIntegerPipe, useException } from '../../lib';
-import { TProcessArgv, THttpContext } from '../http.test';
+import { THttpContext } from '../http.test';
 import { UserController } from '../user/user.controller';
 import { logException } from './error.exception';
 
 @Controller()
 @useException(logException)
 export class HttpUserController {
-  @inject('Http') private http: Http<THttpContext, TProcessArgv>;
+  @inject('Http') private http: Http<THttpContext>;
 
   @Get()
   @HttpCode(201)
