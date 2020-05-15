@@ -1,6 +1,6 @@
 {
   "name": "@flowx/http",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "http server for typeservice",
   "author": "shenyunjie <shenyunjie@aidigger.com>",
   "homepage": "https://github.com/cevio/TypeService#readme",
