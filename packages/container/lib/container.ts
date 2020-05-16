@@ -20,7 +20,7 @@ export class TypeContainer<V = {}> {
   public  readonly processArgv = ParseProcessArgv<V>();
   private readonly initializers = new Set<Observable<any>>();
   private readonly terminaters = new Set<Observable<any>>();
-  private readonly injection = new Container();
+  public readonly injection = new Container();
   private readonly controllers = new Map<TClassIndefiner<any>, Controller<any>>();
   constructor() {
     this.useExit();
