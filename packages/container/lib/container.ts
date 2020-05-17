@@ -22,9 +22,8 @@ export class TypeContainer<V = {}> {
   private readonly terminaters = new Set<Observable<any>>();
   public readonly injection = new Container();
   private readonly controllers = new Map<TClassIndefiner<any>, Controller<any>>();
-  constructor() {
-    this.useExit();
-  }
+  private readonly _controllers = new Set<TClassIndefiner<any>>();
+  constructor() { this.useExit(); }
 
   static get logger() {
     return ProcessLogger;
@@ -84,11 +83,7 @@ export class TypeContainer<V = {}> {
   }
 
   public useController<T>(controller: TClassIndefiner<T>) {
-    if (!this.controllers.has(controller)) {
-      const metaData = AnnotationMetaDataScan(controller, this.injection);
-      const controll = new Controller<T>(metaData, () => this.injection.get<T>(controller));
-      this.controllers.set(controller, controll);
-    }
+    this._controllers.add(controller);
     return this;
   }
 
@@ -98,6 +93,15 @@ export class TypeContainer<V = {}> {
       error: (err: Error) => {
         this.logger.error('exit', '%o', err.stack || err.message);
         ProcessShutDown();
+      },
+      complete: () => {
+        for (const controller of this._controllers) {
+          if (!this.controllers.has(controller)) {
+            const metaData = AnnotationMetaDataScan(controller, this.injection);
+            const controll = new Controller(metaData, () => this.injection.get(controller));
+            this.controllers.set(controller, controll);
+          }
+        }
       }
     })
   }
