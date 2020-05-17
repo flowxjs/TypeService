@@ -102,7 +102,7 @@ export class TypeContainer<V = {}> {
             this.controllers.set(controller, controll);
           }
         }
-        this.logger.success('Well done', 'All plugins run successful!');
+        this.logger.success('Well done', 'All plugins run success!');
       }
     })
   }
