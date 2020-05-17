@@ -1,7 +1,7 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import * as path from 'path';
 import * as http from 'http';
-import * as Router from 'find-my-way';
+import Router from 'find-my-way';
 import { TLogger } from '@flowx/process';
 import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod } from '@flowx/container';
 import { Observable, Observer } from '@reactivex/rxjs';

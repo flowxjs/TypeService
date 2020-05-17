@@ -10,6 +10,7 @@
     "incremental": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
   },
   "include": ["lib"]
 }

@@ -1,5 +1,5 @@
 import * as Koa from 'koa';
-import * as compose from 'koa-compose';
+import compose from 'koa-compose';
 import { TClassIndefiner, TAnnotationScanerMethod } from '@flowx/container';
 import { HttpServerInjectable } from '../http';
 import { NotImplementedException } from '../exception';

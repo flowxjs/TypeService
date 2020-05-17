@@ -1,4 +1,4 @@
-import * as parseArgs from 'minimist';
+import parseArgs from 'minimist';
 import * as npmlog from 'npmlog';
 export function ParseProcessArgv<T = {}>() {
   const argv = parseArgs<T>(process.argv.slice(2));
