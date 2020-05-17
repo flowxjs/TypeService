@@ -77,8 +77,8 @@ export class TypeContainer<V = {}> {
     const compute = <T extends {[key: string]:any}, G extends any[]>(controller: TClassIndefiner<T>, method: keyof T, ...args: G) => {
       if (!this.controllers.has(controller)) throw new Error('Cannot find the controller');
       const controll = this.controllers.get(controller) as Controller<T>;
-      const result = controll.invoke<G>(ctx, method, ...args);
-      callback && callback(result);
+      controll.invoke<G>(ctx, method, ...args)
+        .then(result => callback && callback(result));
     }
     return [ctx, compute];
   }
