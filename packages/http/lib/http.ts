@@ -3,14 +3,13 @@ import * as path from 'path';
 import * as http from 'http';
 import Router from 'find-my-way';
 import { TLogger } from '@flowx/process';
-import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod } from '@flowx/container';
+import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod, TypeServiceInjection } from '@flowx/container';
 import { Observable, Observer } from '@reactivex/rxjs';
 import { NAMESPACE } from './annotation';
 import { HttpInterceptorsConsumer, HttpGuardConsumer, HttpMiddlewareConsumer, HttpErrorExceptionConsumer } from './transforms';
 import { ForbiddenException, NotFoundException, ServiceUnavailableException, HttpException, BadRequestException } from './exception';
-import { Container } from 'inversify';
 
-export const HttpServerInjectable = new Container();
+export const HttpServerInjectable = TypeServiceInjection;
 
 export interface THttpArguments { 
   port?: number, 

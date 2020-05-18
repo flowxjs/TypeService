@@ -16,11 +16,13 @@ export type TMessageData<T = any> = {
   data: T,
 }
 
+export const TypeServiceInjection = new Container();
+
 export class TypeContainer<V = {}> {
   public  readonly processArgv = ParseProcessArgv<V>();
   private readonly initializers = new Set<Observable<any>>();
   private readonly terminaters = new Set<Observable<any>>();
-  public readonly injection = new Container();
+  public readonly injection = TypeServiceInjection;
   private readonly controllers = new Map<TClassIndefiner<any>, Controller<any>>();
   private readonly _controllers = new Set<TClassIndefiner<any>>();
   constructor() { this.useExit(); }
