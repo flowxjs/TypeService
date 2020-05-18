@@ -24,7 +24,7 @@ export class TypeContainer<V = {}> {
   private readonly terminaters = new Set<Observable<any>>();
   public readonly injection = TypeServiceInjection;
   private readonly controllers = new Map<TClassIndefiner<any>, Controller<any>>();
-  private readonly _controllers = new Set<TClassIndefiner<any>>();
+  private readonly channels = new Set<() => Promise<void>>();
   constructor() { this.useExit(); }
 
   static get logger() {
@@ -85,7 +85,17 @@ export class TypeContainer<V = {}> {
   }
 
   public useController<T>(controller: TClassIndefiner<T>) {
-    this._controllers.add(controller);
+    return this.setup(async () => {
+      if (!this.controllers.has(controller)) {
+        const metaData = AnnotationMetaDataScan(controller, this.injection);
+        const controll = new Controller(metaData, () => this.injection.get(controller));
+        this.controllers.set(controller, controll);
+      }
+    });
+  }
+
+  public setup(callback: () => Promise<void>) {
+    this.channels.add(callback);
     return this;
   }
 
@@ -97,14 +107,12 @@ export class TypeContainer<V = {}> {
         ProcessShutDown();
       },
       complete: () => {
-        for (const controller of this._controllers) {
-          if (!this.controllers.has(controller)) {
-            const metaData = AnnotationMetaDataScan(controller, this.injection);
-            const controll = new Controller(metaData, () => this.injection.get(controller));
-            this.controllers.set(controller, controll);
-          }
-        }
-        this.logger.success('Congratulations', 'All plugins run success!');
+        Promise.all(Array.from(this.channels).map(fnc => Promise.resolve(fnc())))
+          .then(() => this.logger.success('Congratulations', 'All plugins run success!'))
+          .catch(err => {
+            this.logger.error('exit', '%o', err.stack || err.message);
+            ProcessShutDown();
+          });
       }
     })
   }

@@ -35,7 +35,6 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
   public readonly container: TypeContainer<V & THttpArguments>;
   private server: http.Server;
   private readonly router: Router.Instance<Router.HTTPVersion.V1>;
-  private readonly controllers = new Set<TClassIndefiner<any>>();
   constructor(container: TypeContainer<V & THttpArguments>) {
     super();
     this.container = container;
@@ -46,7 +45,6 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
       maxParamLength: this.container.processArgv.maxParamLength,
     });
     this.container.useEffect<string, string>((observer) => {
-      for (const controller of this.controllers) this.compileController(controller);
       this.useRouter();
       this.createServer(observer);
       return Observable.create((observer: Observer<string>) => {
@@ -95,7 +93,7 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
   }
 
   public useController<T>(classModule: TClassIndefiner<T>) {
-    this.controllers.add(classModule);
+    this.container.setup(async () => this.compileController(classModule));
     return this;
   }
 
