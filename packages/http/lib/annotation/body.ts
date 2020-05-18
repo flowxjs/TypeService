@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import { Observable } from '@reactivex/rxjs';
 import { ParameterMetaCreator, AnnotationDependenciesAutoRegister, TClassIndefiner } from '@flowx/container';
 import { THttpDefaultContext, HttpServerInjectable } from '../http';

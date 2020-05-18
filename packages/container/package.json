@@ -19,9 +19,7 @@
   "dependencies": {
     "@flowx/events": "^1.0.3",
     "@flowx/process": "^1.0.3",
-    "minimist": "^1.2.5"
-  },
-  "devDependencies": {
+    "minimist": "^1.2.5",
     "@types/minimist": "^1.2.0"
   },
   "peerDependencies": {

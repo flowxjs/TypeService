@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import { Observable } from '@reactivex/rxjs';
 import { switchMap, mergeAll } from 'rxjs/operators';
 import { defer } from 'rxjs';

@@ -19,9 +19,7 @@
   "dependencies": {
     "@flowx/events": "^1.0.3",
     "minimist": "^1.2.5",
-    "npmlog": "^4.1.2"
-  },
-  "devDependencies": {
+    "npmlog": "^4.1.2",
     "@types/minimist": "^1.2.0",
     "@types/npmlog": "^4.1.2"
   },

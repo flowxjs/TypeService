@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import { ParameterMetaCreator } from '@flowx/container';
 import { THttpDefaultContext } from '../http';
 export function Res<C extends Koa.Context>() {

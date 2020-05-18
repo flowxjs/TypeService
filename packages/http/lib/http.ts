@@ -1,6 +1,6 @@
 import Koa from 'koa';
-import * as path from 'path';
-import * as http from 'http';
+import path from 'path';
+import http from 'http';
 import Router from 'find-my-way';
 import { TLogger } from '@flowx/process';
 import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod, TypeServiceInjection } from '@flowx/container';
