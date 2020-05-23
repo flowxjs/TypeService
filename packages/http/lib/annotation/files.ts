@@ -5,16 +5,13 @@ import { THttpDefaultContext, HttpServerInjectable } from '../http';
 import { PipeLineTransform } from '../transforms';
 
 export function Files(): ParameterDecorator;
-export function Files<
-  C extends Koa.ParameterizedContext<any, THttpDefaultContext>, 
-  R = any
->(...piper: TClassIndefiner<PipeLineTransform<any, any>>[]) {
+export function Files<C extends Koa.ParameterizedContext<any, THttpDefaultContext>>(...piper: TClassIndefiner<PipeLineTransform<any, any>>[]) {
   if (piper && piper.length) {
     piper.forEach(pipe => AnnotationDependenciesAutoRegister(pipe, HttpServerInjectable));
   }
-  return ParameterMetaCreator.define<C, R>(async ctx => {
+  return ParameterMetaCreator.define<C>(async ctx => {
     const data = ctx.request.files;
-    if (!piper.length) return data as R;
+    if (!piper.length) return data;
     const observable = Observable.of(data);
     const latObservable = piper.reduce((prev, next) => {
       return prev.pipe(source => {
@@ -22,6 +19,6 @@ export function Files<
         return target.transform(source);
       })
     }, observable);
-    return await latObservable.toPromise<R>();
+    return await latObservable.toPromise();
   })
 }

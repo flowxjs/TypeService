@@ -6,12 +6,12 @@ import { PipeLineTransform } from '../transforms';
 
 export function Params(): ParameterDecorator;
 export function Params(key: string): ParameterDecorator;
-export function Params<C extends Koa.ParameterizedContext<any, THttpDefaultContext>, R = any>(key: string, ...piper: TClassIndefiner<PipeLineTransform<string, R>>[]): ParameterDecorator;
-export function Params<C extends Koa.ParameterizedContext<any, THttpDefaultContext>, R = any>(key?: string | TClassIndefiner<PipeLineTransform<string, any>>, ...piper: TClassIndefiner<PipeLineTransform<any, any>>[]) {
+export function Params<C extends Koa.ParameterizedContext<any, THttpDefaultContext>>(key: string, ...piper: TClassIndefiner<PipeLineTransform<any, any>>[]): ParameterDecorator;
+export function Params<C extends Koa.ParameterizedContext<any, THttpDefaultContext>>(key?: string | TClassIndefiner<PipeLineTransform<string, any>>, ...piper: TClassIndefiner<PipeLineTransform<any, any>>[]) {
   if (piper && piper.length) {
     piper.forEach(pipe => AnnotationDependenciesAutoRegister(pipe, HttpServerInjectable))
   }
-  return ParameterMetaCreator.define<C, R>(async ctx => {
+  return ParameterMetaCreator.define<C>(async ctx => {
     if (!key) return ctx.params as any;
     if (typeof key === 'string') {
       if (!piper.length) return ctx.params[key] as any;
@@ -22,7 +22,7 @@ export function Params<C extends Koa.ParameterizedContext<any, THttpDefaultConte
           return target.transform(source);
         });
       }, observable);
-      return await latObservable.toPromise<R>();
+      return await latObservable.toPromise();
     }
   })
 }

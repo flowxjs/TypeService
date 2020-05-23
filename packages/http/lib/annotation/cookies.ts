@@ -6,19 +6,13 @@ import { PipeLineTransform } from '../transforms';
 
 export function Cookies(): ParameterDecorator;
 export function Cookies(key: string): ParameterDecorator;
-export function Cookies<
-  C extends Koa.Context, 
-  R = any
->(key: string, ...piper: TClassIndefiner<PipeLineTransform<string, R>>[]): ParameterDecorator;
-export function Cookies<
-  C extends Koa.Context, 
-  R = any
->(key?: string | TClassIndefiner<PipeLineTransform<string, any>>, ...piper: TClassIndefiner<PipeLineTransform<any, any>>[]) {
+export function Cookies<C extends Koa.Context>(key: string, ...piper: TClassIndefiner<PipeLineTransform<string, any>>[]): ParameterDecorator;
+export function Cookies<C extends Koa.Context>(key?: string | TClassIndefiner<PipeLineTransform<string, any>>, ...piper: TClassIndefiner<PipeLineTransform<any, any>>[]) {
   if (piper && piper.length) {
     piper.forEach(pipe => AnnotationDependenciesAutoRegister(pipe, HttpServerInjectable));
   }
-  return ParameterMetaCreator.define<C, R>(async ctx => {
-    if (!key) return ctx.cookies as any;
+  return ParameterMetaCreator.define<C>(async ctx => {
+    if (!key) return ctx.cookies;
     if (typeof key === 'string') {
       if (!piper.length) return ctx.cookies.get(key);
       const observable = Observable.of(ctx.cookies.get(key));
@@ -28,7 +22,7 @@ export function Cookies<
           return target.transform(source);
         });
       }, observable);
-      return await latObservable.toPromise<R>();
+      return await latObservable.toPromise();
     }
   })
 }
