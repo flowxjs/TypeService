@@ -1,16 +1,15 @@
 import Koa from 'koa';
-import * as path from 'path';
-import * as http from 'http';
+import path from 'path';
+import http from 'http';
 import Router from 'find-my-way';
 import { TLogger } from '@flowx/process';
-import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod } from '@flowx/container';
+import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod, TypeServiceInjection } from '@flowx/container';
 import { Observable, Observer } from '@reactivex/rxjs';
 import { NAMESPACE } from './annotation';
 import { HttpInterceptorsConsumer, HttpGuardConsumer, HttpMiddlewareConsumer, HttpErrorExceptionConsumer } from './transforms';
 import { ForbiddenException, NotFoundException, ServiceUnavailableException, HttpException, BadRequestException } from './exception';
-import { Container } from 'inversify';
 
-export const HttpServerInjectable = new Container();
+export const HttpServerInjectable = TypeServiceInjection;
 
 export interface THttpArguments { 
   port?: number, 
@@ -94,6 +93,11 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
   }
 
   public useController<T>(classModule: TClassIndefiner<T>) {
+    this.container.setup(async () => this.compileController(classModule));
+    return this;
+  }
+
+  private compileController<T>(classModule: TClassIndefiner<T>) {
     const classMetadata = AnnotationMetaDataScan(classModule, HttpServerInjectable);
     const classPrefix = classMetadata.meta.got<string>(NAMESPACE.PREFIX, '/');
     for (const [key, method] of classMetadata.methods) {

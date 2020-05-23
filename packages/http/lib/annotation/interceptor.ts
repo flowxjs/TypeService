@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import { MethodMetaCreator, ClassMetaCreator, TClassIndefiner, AnnotationDependenciesAutoRegister } from '@flowx/container';
 import { NAMESPACE } from './namespace';
 import { HttpServerInjectable } from '../http';

@@ -1,4 +1,4 @@
-import * as npmlog from 'npmlog';
+import npmlog from 'npmlog';
 import { Observable } from '@reactivex/rxjs';
 import { EventEmitter } from '@flowx/events';
 

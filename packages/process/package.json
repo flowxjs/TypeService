@@ -1,6 +1,6 @@
 {
   "name": "@flowx/process",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "process for typeservice",
   "author": "evio <evio@vip.qq.com>",
   "homepage": "",
@@ -18,12 +18,10 @@
   },
   "dependencies": {
     "@flowx/events": "^1.0.3",
+    "@types/minimist": "^1.2.0",
+    "@types/npmlog": "^4.1.2",
     "minimist": "^1.2.5",
     "npmlog": "^4.1.2"
-  },
-  "devDependencies": {
-    "@types/minimist": "^1.2.0",
-    "@types/npmlog": "^4.1.2"
   },
   "peerDependencies": {
     "@reactivex/rxjs": "^6.5.5",

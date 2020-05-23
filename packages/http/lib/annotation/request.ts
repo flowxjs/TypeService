@@ -1,4 +1,4 @@
-import * as Router from 'find-my-way';
+import Router from 'find-my-way';
 import { MethodMetaCreator } from '@flowx/container';
 import { NAMESPACE } from './namespace';
 

@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import { HttpErrorException } from '../../lib';
 import { THttpContext } from '../http.test';
 import { injectable } from 'inversify';

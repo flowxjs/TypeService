@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import { MethodMetaCreator } from '@flowx/container';
 import { NAMESPACE } from './namespace';
 import { injectable } from 'inversify';

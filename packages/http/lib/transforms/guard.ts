@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import { TClassIndefiner, TAnnotationScanerMethod } from '@flowx/container';
 import { Observable } from '@reactivex/rxjs';
 import { HttpServerInjectable } from '../http';
