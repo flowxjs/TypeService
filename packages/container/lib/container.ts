@@ -25,7 +25,10 @@ export class TypeContainer<V = {}> {
   public readonly injection = TypeServiceInjection;
   private readonly controllers = new Map<TClassIndefiner<any>, Controller<any>>();
   private readonly channels = new Set<() => Promise<void>>();
-  constructor() { this.useExit(); }
+  constructor() { 
+    TypeServiceInjection.bind('Container').toConstantValue(this);
+    this.useExit(); 
+  }
 
   static get logger() {
     return ProcessLogger;

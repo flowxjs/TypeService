@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import { Observable } from '@reactivex/rxjs';
-import { ParameterMetaCreator, TClassIndefiner, AnnotationDependenciesAutoRegister } from '@flowx/container';
+import { ParameterMetaCreator, TClassIndefiner } from '@flowx/container';
 import { THttpDefaultContext, HttpServerInjectable } from '../http';
 import { PipeLineTransform } from '../transforms';
 import { NAMESPACE } from './namespace';

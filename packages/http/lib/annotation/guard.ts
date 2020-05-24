@@ -1,8 +1,7 @@
 import Koa from 'koa';
-import { MethodMetaCreator, TClassIndefiner, AnnotationDependenciesAutoRegister } from '@flowx/container';
+import { MethodMetaCreator, TClassIndefiner } from '@flowx/container';
 import { NAMESPACE } from './namespace';
 import { CanActivate } from '../transforms';
-import { HttpServerInjectable } from '../http';
 import { useInject } from './inject';
 export function useGuard<
   C extends Koa.Context,

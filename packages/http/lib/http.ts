@@ -58,7 +58,6 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
       portal: { get: () => this.portal.bind(this), },
     });
     HttpServerInjectable.bind('Http').toConstantValue(this);
-    HttpServerInjectable.bind('Container').toConstantValue(this.container);
   }
 
   get logger() {

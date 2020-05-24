@@ -1,8 +1,7 @@
 import Koa from 'koa';
 import compose from 'koa-compose';
-import { ClassMetaCreator, MethodMetaCreator, AnnotationDependenciesAutoRegister, TClassIndefiner } from '@flowx/container';
+import { ClassMetaCreator, MethodMetaCreator, TClassIndefiner } from '@flowx/container';
 import { NAMESPACE } from './namespace';
-import { HttpServerInjectable } from '../http';
 import { HttpMiddleware } from '../transforms/middleware';
 import { useInject } from './inject';
 export function useMiddleware<
