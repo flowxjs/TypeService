@@ -130,7 +130,7 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
           const parameters = await method.parameter.exec(ctx);
           // Guard resolver.
           const guardContext = new HttpGuardConsumer();
-          const canActive = guardContext.tryActivate(ctx);
+          const canActive = await guardContext.tryActivate(ctx);
           if (!canActive) throw new ForbiddenException();
           if (!server[key]) throw new NotFoundException('cannot find the method of ' + key + ' on Controller');
           // Interceptor resolver.
