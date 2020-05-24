@@ -10,4 +10,5 @@ export enum NAMESPACE {
   GUARD = 'TypeService.NAMESPACE.HTTP.Controller.Guarder',
   EXCEPTION = 'TypeService.NAMESPACE.HTTP.Controller.Exception',
   INTERCEPTOR = 'TypeService.NAMESPACE.HTTP.Controller.Interceptor',
+  INJECTABLE = 'TypeService.NAMESPACE.HTTP.Controller.Injectable',
 }

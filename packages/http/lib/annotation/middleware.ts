@@ -4,16 +4,14 @@ import { ClassMetaCreator, MethodMetaCreator, AnnotationDependenciesAutoRegister
 import { NAMESPACE } from './namespace';
 import { HttpServerInjectable } from '../http';
 import { HttpMiddleware } from '../transforms/middleware';
+import { useInject } from './inject';
 export function useMiddleware<
   C extends Koa.Context,
   M extends TClassIndefiner<HttpMiddleware<C>>
 >(...args: (compose.Middleware<C> | M)[]) {
-  args.forEach(arg => {
-    if (arg.prototype && arg.prototype.use) {
-      AnnotationDependenciesAutoRegister(arg as M, HttpServerInjectable);
-    }
-  });
   return <T>(target: Object, property?: string | symbol, descripor?: TypedPropertyDescriptor<T>) => {
+    const classModules = args.filter(arg => arg.prototype && arg.prototype.use) as M[];
+    useInject(...classModules)(target, property, descripor);
     if (!property) {
       ClassMetaCreator.unshift(NAMESPACE.MIDDLEWARE, ...args)(target as Function);
     } else {

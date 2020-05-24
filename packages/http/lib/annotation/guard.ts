@@ -3,10 +3,13 @@ import { MethodMetaCreator, TClassIndefiner, AnnotationDependenciesAutoRegister 
 import { NAMESPACE } from './namespace';
 import { CanActivate } from '../transforms';
 import { HttpServerInjectable } from '../http';
+import { useInject } from './inject';
 export function useGuard<
   C extends Koa.Context,
   T extends CanActivate<C>
 >(...classModules: TClassIndefiner<T>[]) {
-  classModules.forEach(classModule => AnnotationDependenciesAutoRegister(classModule, HttpServerInjectable));
-  return MethodMetaCreator.unshift(NAMESPACE.GUARD, ...classModules);
+  return MethodMetaCreator.join(
+    useInject(...classModules),
+    MethodMetaCreator.unshift(NAMESPACE.GUARD, ...classModules)
+  );
 }

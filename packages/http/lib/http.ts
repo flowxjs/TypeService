@@ -3,7 +3,7 @@ import path from 'path';
 import http from 'http';
 import Router from 'find-my-way';
 import { TLogger } from '@flowx/process';
-import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod, TypeServiceInjection } from '@flowx/container';
+import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod, TypeServiceInjection, AnnotationDependenciesAutoRegister } from '@flowx/container';
 import { Observable, Observer } from '@reactivex/rxjs';
 import { NAMESPACE } from './annotation';
 import { HttpInterceptorsConsumer, HttpGuardConsumer, HttpMiddlewareConsumer, HttpErrorExceptionConsumer } from './transforms';
@@ -97,14 +97,23 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
     return this;
   }
 
+  private injectClassModules(...classModules: TClassIndefiner<any>[]) {
+    classModules.forEach(classModule => AnnotationDependenciesAutoRegister(classModule, HttpServerInjectable));
+    return this;
+  }
+
   private compileController<T>(classModule: TClassIndefiner<T>) {
     const classMetadata = AnnotationMetaDataScan(classModule, HttpServerInjectable);
     const classPrefix = classMetadata.meta.got<string>(NAMESPACE.PREFIX, '/');
+    const classInjectors = classMetadata.meta.got<TClassIndefiner<any>[]>(NAMESPACE.INJECTABLE, []);
+    this.injectClassModules(...classInjectors);
     for (const [key, method] of classMetadata.methods) {
       const propertyMethods = method.meta.got<Router.HTTPMethod[]>(NAMESPACE.METHOD, []);
       if (!propertyMethods.length) continue;
       const propertyPath = method.meta.got<string>(NAMESPACE.PATH, '/');
       const propertyEntryPath = path.join(classPrefix, '.', propertyPath);
+      const propertyInjectors = method.meta.got<TClassIndefiner<any>[]>(NAMESPACE.INJECTABLE, []);
+      this.injectClassModules(...propertyInjectors);
       this.logger.info(propertyMethods.join(','), '+ %s', propertyEntryPath);
       this.router.on(propertyMethods, propertyEntryPath, async function(req, res, params) {
         const ctx: Koa.ParameterizedContext<any, C> = this;

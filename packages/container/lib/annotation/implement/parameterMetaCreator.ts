@@ -52,4 +52,28 @@ export class ParameterMetaCreator {
       meta.set(index, (ctx: T) => callback(ctx));
     }
   }
+
+  static pushToParent(key: string, ...args: any): ParameterDecorator {
+    return (target, property, index) => {
+      const func = Object.getOwnPropertyDescriptor(target.constructor.prototype, property);
+      const meta = MethodMetaCreator.instance(func);
+      const data = meta.has(key) ? meta.get<any[]>(key) : [];
+			data.push(...args);
+			meta.set(key, data);
+    }
+  }
+
+  static unshiftToParent(key: string, ...args: any): ParameterDecorator {
+    return (target, property, index) => {
+      const func = Object.getOwnPropertyDescriptor(target.constructor.prototype, property);
+      const meta = MethodMetaCreator.instance(func);
+      const data = meta.has(key) ? meta.get<any[]>(key) : [];
+			data.push(...args);
+			meta.set(key, data);
+    }
+  }
+
+  static joinToParent(...args: ParameterDecorator[]): ParameterDecorator {
+    return (target, property, index) => args.forEach(arg => arg(target, property, index));
+  }
 }

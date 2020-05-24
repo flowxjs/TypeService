@@ -19,3 +19,4 @@ export * from './ip';
 export * from './exception';
 export * from './interceptor';
 export * from './guard';
+export * from './inject';
