@@ -13,11 +13,11 @@ export class HttpRedirectInterceptor<C extends Koa.ParameterizedContext<any, THt
     const metadata = context.metadata;
     const propertyRedirection = metadata.meta.got<{url: string, status: number}>(NAMESPACE.REDIRECT);
     return next.handle().pipe(
-      tap(() => {
+      tap((value?: { url: string, status: number}) => {
         if (propertyRedirection) {
           let url = propertyRedirection.url, status = propertyRedirection.status || 302;
-          if (context.body && context.body.url) url = context.body.url;
-          if (context.body && context.body.status) status = context.body.status;
+          if (value && value.url) url = value.url;
+          if (value && value.status) status = value.status;
           context.status = status;
           return context.redirect(url);
         }
