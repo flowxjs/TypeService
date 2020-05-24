@@ -19,16 +19,29 @@ export class HttpRedirectInterceptor<C extends Koa.ParameterizedContext<any, THt
           if (value && value.url) url = value.url;
           if (value && value.status) status = value.status;
           context.status = status;
-          return context.redirect(url);
+          return url && context.redirect(url);
         }
       }),
     );
   }
 }
-
-export function Redirect(url: string, status: number = 302) {
+export function Redirect(): MethodDecorator;
+export function Redirect(url: string): MethodDecorator;
+export function Redirect(status: number): MethodDecorator;
+export function Redirect(url?: string | number, status?: number): MethodDecorator {
+  let _url: string | null = null, _status: number = 302;
+  if (status === undefined) {
+    if (typeof url === 'number') {
+      _status = url;
+    } else {
+      _url = url;
+    }
+  } else {
+    _url = url as string;
+    _status = status;
+  }
   return MethodMetaCreator.join(
-    MethodMetaCreator.define(NAMESPACE.REDIRECT, { url, status }),
+    MethodMetaCreator.define(NAMESPACE.REDIRECT, { url: _url, status: _status }),
     useInterceptor(HttpRedirectInterceptor),
   );
 }
