@@ -12,5 +12,5 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
   },
-  "include": ["lib", "__tests__"]
+  "include": ["lib"]
 }
