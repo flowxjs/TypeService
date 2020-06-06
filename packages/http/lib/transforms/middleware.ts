@@ -10,6 +10,7 @@ export declare class HttpMiddleware<C extends Koa.Context> {
 }
 
 export class HttpMiddlewareConsumer<C extends Koa.Context, M extends HttpMiddleware<C>> {
+  constructor(private next?: compose.Middleware<C>) {}
   public async compose(ctx: C) {
     const method = ctx.metadata;
     const classModules = this.getMiddlewareIndefiners(method);
@@ -23,6 +24,7 @@ export class HttpMiddlewareConsumer<C extends Koa.Context, M extends HttpMiddlew
       }
       return classModule;
     });
+    this.next && middlewares.push(this.next);
     return compose(middlewares as compose.Middleware<C>[])(ctx);
   }
 

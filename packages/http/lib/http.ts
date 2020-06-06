@@ -6,7 +6,7 @@ import { TLogger } from '@flowx/process';
 import { TypeContainer, TClassIndefiner, AnnotationMetaDataScan, TAnnotationScanerMethod, TypeServiceInjection, AnnotationDependenciesAutoRegister } from '@flowx/container';
 import { Observable, Observer } from '@reactivex/rxjs';
 import { NAMESPACE } from './annotation';
-import { HttpInterceptorsConsumer, HttpGuardConsumer, HttpMiddlewareConsumer, HttpErrorExceptionConsumer } from './transforms';
+import { HttpInterceptorsConsumer, HttpGuardConsumer, HttpMiddlewareConsumer, HttpErrorExceptionConsumer, HttpMiddleware } from './transforms';
 import { ForbiddenException, NotFoundException, ServiceUnavailableException, HttpException, BadRequestException } from './exception';
 
 export const HttpServerInjectable = TypeServiceInjection;
@@ -120,12 +120,13 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
           params: { get: () => params, },
           metadata: { get: () => method, },
         });
-        try {
-          const server = HttpServerInjectable.get(classModule);
-          if (!server) throw new BadRequestException();
-          // Middleware resolver
-          const middlewareConsumer = new HttpMiddlewareConsumer();
-          await middlewareConsumer.compose(ctx);
+        const server = HttpServerInjectable.get(classModule);
+        if (!server) throw new BadRequestException();
+        // Middleware resolver
+        const middlewareConsumer = new HttpMiddlewareConsumer<
+          Koa.ParameterizedContext<any, C>, 
+          HttpMiddleware<Koa.ParameterizedContext<any, C>>
+        >(async (ctx, next) => {
           // PipeLine resolver.
           const parameters = await method.parameter.exec(ctx);
           // Guard resolver.
@@ -136,14 +137,16 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
           // Interceptor resolver.
           const interceptorsConsumer = new HttpInterceptorsConsumer();
           ctx.body = await interceptorsConsumer.intercept(ctx, () => Promise.resolve(server[key](...parameters)));
-        } catch(e) {
+          await next();
+        });
+        await middlewareConsumer.compose(ctx).catch(async e => {
           const err = e instanceof HttpException ? e : new ServiceUnavailableException(e.message);
           ctx.status = err.getStatus();
           ctx.body = err.message;
           ctx.error = err;
           const httpErrorExceptionConsumer = new HttpErrorExceptionConsumer();
           await httpErrorExceptionConsumer.catch(ctx);
-        }
+        });
       });
     }
   }
