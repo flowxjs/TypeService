@@ -31,10 +31,11 @@ export interface THttpDefaultContext extends Koa.DefaultContext {
   }
 }
 
-export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> extends Koa<Koa.DefaultState, THttpDefaultContext> {
+export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> extends Koa<Koa.DefaultState, C> {
   public readonly container: TypeContainer<V & THttpArguments>;
   private server: http.Server;
   private readonly router: Router.Instance<Router.HTTPVersion.V1>;
+  private readonly notFounds: ((ctx: Koa.ParameterizedContext<Koa.DefaultState, C>) => Promise<void>)[];
   constructor(container: TypeContainer<V & THttpArguments>) {
     super();
     this.container = container;
@@ -43,6 +44,12 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
       allowUnsafeRegex: this.container.processArgv.allowUnsafeRegex,
       caseSensitive: this.container.processArgv.caseSensitive,
       maxParamLength: this.container.processArgv.maxParamLength,
+      defaultRoute: async (req: http.IncomingMessage & { ctx: Koa.ParameterizedContext<Koa.DefaultState, C> }) => {
+        const ctx = req.ctx;
+        for (let i = 0; i < this.notFounds.length; i++) {
+          await this.notFounds[i](ctx);
+        }
+      }
     });
     this.container.useEffect<string, string>((observer) => {
       this.useRouter();
@@ -98,6 +105,11 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
 
   private injectClassModules(...classModules: TClassIndefiner<any>[]) {
     classModules.forEach(classModule => AnnotationDependenciesAutoRegister(classModule, HttpServerInjectable));
+    return this;
+  }
+
+  public whenNotFound(callback: (ctx: Koa.ParameterizedContext<Koa.DefaultState, C>) => Promise<void>) {
+    this.notFounds.push(callback);
     return this;
   }
 
