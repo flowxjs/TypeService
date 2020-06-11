@@ -35,7 +35,7 @@ export class Http<C extends THttpDefaultContext = THttpDefaultContext, V = {}> e
   public readonly container: TypeContainer<V & THttpArguments>;
   private server: http.Server;
   private readonly router: Router.Instance<Router.HTTPVersion.V1>;
-  private readonly notFounds: ((ctx: Koa.ParameterizedContext<Koa.DefaultState, C>) => Promise<void>)[];
+  private readonly notFounds: ((ctx: Koa.ParameterizedContext<Koa.DefaultState, C>) => Promise<void>)[] = [];
   constructor(container: TypeContainer<V & THttpArguments>) {
     super();
     this.container = container;
